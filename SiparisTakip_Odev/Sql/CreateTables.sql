@@ -21,17 +21,23 @@ CREATE TABLE Siparisler
     Id INT IDENTITY(1,1) PRIMARY KEY,
     KullaniciId INT NOT NULL FOREIGN KEY REFERENCES Kullanicilar(Id),
     Tarih DATETIME NOT NULL,
-    Durum NVARCHAR(100) NOT NULL
+    Durum NVARCHAR(100) NOT NULL,
+    Toplam DECIMAL(18,2) NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE SiparisDetaylar
 (
     Id INT IDENTITY(1,1) PRIMARY KEY,
-    SiparisId INT NOT NULL FOREIGN KEY REFERENCES Siparisler(Id),
+    SiparisId INT NOT NULL,
     UrunId INT NOT NULL FOREIGN KEY REFERENCES Urunler(Id),
     Adet INT NOT NULL,
     BirimFiyat DECIMAL(18,2) NOT NULL
 );
 
+ALTER TABLE SiparisDetaylar
+ADD CONSTRAINT FK_SiparisDetaylar_Siparisler FOREIGN KEY (SiparisId) REFERENCES Siparisler(Id) ON DELETE CASCADE;
+
 -- Insert a default admin
-INSERT INTO Kullanicilar (KullaniciAdi,Sifre,Rol) VALUES ('admin','admin','Admin');
+-- Ensure admin has username=admin and password=admin for consistency with application
+IF NOT EXISTS (SELECT 1 FROM Kullanicilar WHERE KullaniciAdi='admin')
+    INSERT INTO Kullanicilar (KullaniciAdi,Sifre,Rol) VALUES ('admin','admin','Admin');

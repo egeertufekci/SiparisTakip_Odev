@@ -16,9 +16,11 @@ namespace SiparisTakip_Odev.Forms
         public FrmLogin()
         {
             Text = "Giriþ";
-            Width = 300;
-            Height = 200;
+            Width = 360;
+            Height = 220;
             StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
 
             var lbl1 = new Label { Text = "Kullanýcý Adý:", Left = 10, Top = 20 };
             txtUser = new TextBox { Left = 110, Top = 18, Width = 150 };
@@ -36,7 +38,7 @@ namespace SiparisTakip_Odev.Forms
         private void BtnRegister_Click(object sender, EventArgs e)
         {
             var reg = new FrmRegister();
-            reg.ShowDialog();
+            reg.ShowDialog(this);
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
@@ -57,16 +59,32 @@ namespace SiparisTakip_Odev.Forms
             Hide();
             if (rol == "Admin")
             {
-                var a = new FrmAdmin();
-                a.FormClosed += (s, ea) => Close();
+                var a = new FrmAdmin(this);
+                a.FormClosed += (s, ea) => this.Show();
                 a.Show();
             }
             else
             {
-                var m = new FrmMain(id);
-                m.FormClosed += (s, ea) => Close();
+                var m = new FrmMain(this, id);
+                m.FormClosed += (s, ea) => this.Show();
                 m.Show();
             }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // If user clicked X on login form, confirm exit
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                var res = MessageBox.Show("Uygulamadan çýkmak istediðinize emin misiniz?", "Çýkýþ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (res == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                Application.Exit();
+            }
+            base.OnFormClosing(e);
         }
     }
 }

@@ -87,5 +87,14 @@ namespace SiparisTakip_Odev.Data
                 return cmd.ExecuteScalar();
             }
         }
+
+        // Helper to check whether a column exists in a table
+        public static bool ColumnExists(string tableName, string columnName)
+        {
+            var dt = GetTable("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@t AND COLUMN_NAME=@c",
+                new SqlParameter("@t", tableName),
+                new SqlParameter("@c", columnName));
+            return dt.Rows.Count > 0;
+        }
     }
 }
