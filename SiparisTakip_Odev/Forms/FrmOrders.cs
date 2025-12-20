@@ -6,27 +6,19 @@ using SiparisTakip_Odev.Data;
 
 namespace SiparisTakip_Odev.Forms
 {
-    public class FrmOrders : Form
+    public partial class FrmOrders : Form
     {
         private int _userId;
-        private DataGridView dgvOrders;
-        private DataGridView dgvDetails;
 
         public FrmOrders(int userId)
         {
             _userId = userId;
-            Text = "Sipariþlerim";
-            Width = 800; Height = 600; StartPosition = FormStartPosition.CenterParent; FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-
-            dgvOrders = new DataGridView { Left = 10, Top = 10, Width = 760, Height = 250, ReadOnly = true, AllowUserToAddRows = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
-            dgvDetails = new DataGridView { Left = 10, Top = 280, Width = 760, Height = 250, ReadOnly = true, AllowUserToAddRows = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            InitializeComponent();
 
             dgvOrders.SelectionChanged += DgvOrders_SelectionChanged;
-
-            Controls.AddRange(new Control[] { dgvOrders, dgvDetails });
-
             Load += FrmOrders_Load;
-            // Apply theme
+
+            // Apply theme to this form
             SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
         }
 
@@ -51,16 +43,6 @@ namespace SiparisTakip_Odev.Forms
             dgvDetails.DataSource = dt;
         }
 
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // FrmOrders
-            // 
-            this.ClientSize = new System.Drawing.Size(278, 244);
-            this.Name = "FrmOrders";
-            this.ResumeLayout(false);
-
-        }
+        // UI is initialized in FrmOrders.Designer.cs
     }
 }

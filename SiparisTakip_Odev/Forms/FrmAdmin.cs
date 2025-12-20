@@ -23,6 +23,10 @@ namespace SiparisTakip_Odev.Forms
             btnUpdate.Click += BtnUpdate_Click;
             dgv.SelectionChanged += Dgv_SelectionChanged;
             Load += FrmAdmin_Load;
+
+            // Apply current theme to this admin form and subscribe to changes
+            SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
+            SiparisTakip_Odev.Data.Theme.ThemeChanged += (s, e) => SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
         }
 
         private void FrmAdmin_Load(object sender, EventArgs e)
@@ -115,12 +119,22 @@ namespace SiparisTakip_Odev.Forms
 
         private void BtnUpdateStatus_Click(object sender, EventArgs e)
         {
-            if (dgvOrders.CurrentRow == null) { MessageBox.Show("Sipariþ seçiniz"); return; }
+            if (dgvOrders.SelectedRows.Count == 0) { MessageBox.Show("Sipariþ seçiniz"); return; }
             if (cmbStatus.SelectedItem == null) { MessageBox.Show("Durum seçiniz"); return; }
-            var id = Convert.ToInt32(dgvOrders.CurrentRow.Cells["Id"].Value);
-            var sql = "UPDATE Siparisler SET Durum=@d WHERE Id=@id";
-            Db.Execute(sql, new SqlParameter("@d", cmbStatus.SelectedItem.ToString()), new SqlParameter("@id", id));
-            LoadOrders();
+            var durum = cmbStatus.SelectedItem.ToString();
+            try
+            {
+                foreach (DataGridViewRow row in dgvOrders.SelectedRows)
+                {
+                    var id = Convert.ToInt32(row.Cells["Id"].Value);
+                    Db.Execute("UPDATE Siparisler SET Durum=@d WHERE Id=@id", new SqlParameter("@d", durum), new SqlParameter("@id", id));
+                }
+                LoadOrders();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Durum güncellenirken hata: " + ex.Message);
+            }
         }
 
         // UI initialized in FrmAdmin.Designer.cs

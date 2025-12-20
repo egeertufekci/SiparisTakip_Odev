@@ -28,7 +28,27 @@ namespace SiparisTakip_Odev.Forms
             btnLogout.Click += BtnLogout_Click;
             btnMyOrders.Click += BtnMyOrders_Click;
             cmbTheme.SelectedIndexChanged += CmbTheme_SelectedIndexChanged;
+            dgvProducts.SelectionChanged += DgvProducts_SelectionChanged;
             Load += FrmMain_Load;
+        }
+
+        private void DgvProducts_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvProducts.SelectedRows.Count == 0)
+            {
+                lblSelectedProduct.Text = "Seçili Ürün: -";
+                return;
+            }
+            // If multiple selected, show count
+            if (dgvProducts.SelectedRows.Count > 1)
+            {
+                lblSelectedProduct.Text = $"Seçili Ürünler: {dgvProducts.SelectedRows.Count} adet";
+            }
+            else
+            {
+                var row = dgvProducts.SelectedRows[0];
+                lblSelectedProduct.Text = "Seçili Ürün: " + row.Cells["UrunAdi"].Value?.ToString();
+            }
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -84,19 +104,20 @@ namespace SiparisTakip_Odev.Forms
 
         private void BtnAddToCart_Click(object sender, EventArgs e)
         {
-            if (dgvProducts.CurrentRow == null) { MessageBox.Show("Ürün seçiniz"); return; }
-            var id = Convert.ToInt32(dgvProducts.CurrentRow.Cells["Id"].Value);
-            var name = dgvProducts.CurrentRow.Cells["UrunAdi"].Value.ToString();
-            var price = Convert.ToDecimal(dgvProducts.CurrentRow.Cells["Fiyat"].Value);
+            if (dgvProducts.SelectedRows.Count == 0) { MessageBox.Show("Ürün seçiniz"); return; }
             var qty = (int)nudQty.Value;
+            foreach (DataGridViewRow row in dgvProducts.SelectedRows)
+            {
+                var id = Convert.ToInt32(row.Cells["Id"].Value);
+                var name = row.Cells["UrunAdi"].Value.ToString();
+                var price = Convert.ToDecimal(row.Cells["Fiyat"].Value);
+                var stok = Convert.ToInt32(row.Cells["Stok"].Value);
+                if (qty > stok) { MessageBox.Show($"Yeterli stok yok: {name}"); continue; }
 
-            var stok = Convert.ToInt32(dgvProducts.CurrentRow.Cells["Stok"].Value);
-            if (qty > stok) { MessageBox.Show("Yeterli stok yok"); return; }
-
-            var existing = cart.FirstOrDefault(x => x.UrunId == id);
-            if (existing != null) existing.Adet += qty;
-            else cart.Add(new CartItem { UrunId = id, UrunAdi = name, BirimFiyat = price, Adet = qty });
-
+                var existing = cart.FirstOrDefault(x => x.UrunId == id);
+                if (existing != null) existing.Adet += qty;
+                else cart.Add(new CartItem { UrunId = id, UrunAdi = name, BirimFiyat = price, Adet = qty });
+            }
             RefreshCartGrid();
         }
 

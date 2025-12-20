@@ -25,6 +25,7 @@ namespace SiparisTakip_Odev.Forms
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnMyOrders = new System.Windows.Forms.Button();
             this.cmbTheme = new System.Windows.Forms.ComboBox();
+            this.lblSelectedProduct = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudQty)).BeginInit();
@@ -39,6 +40,7 @@ namespace SiparisTakip_Odev.Forms
             this.dgvProducts.Name = "dgvProducts";
             this.dgvProducts.ReadOnly = true;
             this.dgvProducts.RowHeadersWidth = 62;
+            this.dgvProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvProducts.Size = new System.Drawing.Size(600, 500);
             this.dgvProducts.TabIndex = 0;
             // 
@@ -73,7 +75,7 @@ namespace SiparisTakip_Odev.Forms
             // 
             // btnAddToCart
             // 
-            this.btnAddToCart.Location = new System.Drawing.Point(684, 480);
+            this.btnAddToCart.Location = new System.Drawing.Point(684, 481);
             this.btnAddToCart.Name = "btnAddToCart";
             this.btnAddToCart.Size = new System.Drawing.Size(120, 23);
             this.btnAddToCart.TabIndex = 3;
@@ -89,9 +91,10 @@ namespace SiparisTakip_Odev.Forms
             // 
             // btnCreateOrder
             // 
-            this.btnCreateOrder.Location = new System.Drawing.Point(846, 440);
+            this.btnCreateOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnCreateOrder.Location = new System.Drawing.Point(826, 440);
             this.btnCreateOrder.Name = "btnCreateOrder";
-            this.btnCreateOrder.Size = new System.Drawing.Size(120, 23);
+            this.btnCreateOrder.Size = new System.Drawing.Size(140, 26);
             this.btnCreateOrder.TabIndex = 5;
             this.btnCreateOrder.Text = "Sipariþ Ver";
             // 
@@ -115,9 +118,10 @@ namespace SiparisTakip_Odev.Forms
             // 
             // btnMyOrders
             // 
-            this.btnMyOrders.Location = new System.Drawing.Point(745, 516);
+            this.btnMyOrders.Font = new System.Drawing.Font("Segoe Print", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnMyOrders.Location = new System.Drawing.Point(715, 516);
             this.btnMyOrders.Name = "btnMyOrders";
-            this.btnMyOrders.Size = new System.Drawing.Size(120, 23);
+            this.btnMyOrders.Size = new System.Drawing.Size(175, 32);
             this.btnMyOrders.TabIndex = 8;
             this.btnMyOrders.Text = "Sipariþlerim";
             // 
@@ -129,14 +133,23 @@ namespace SiparisTakip_Odev.Forms
             "Dark",
             "Blue",
             "Green"});
-            this.cmbTheme.Location = new System.Drawing.Point(12, 5);
+            this.cmbTheme.Location = new System.Drawing.Point(690, 5);
             this.cmbTheme.Name = "cmbTheme";
             this.cmbTheme.Size = new System.Drawing.Size(150, 28);
             this.cmbTheme.TabIndex = 9;
             // 
+            // lblSelectedProduct
+            // 
+            this.lblSelectedProduct.Location = new System.Drawing.Point(12, 6);
+            this.lblSelectedProduct.Name = "lblSelectedProduct";
+            this.lblSelectedProduct.Size = new System.Drawing.Size(277, 24);
+            this.lblSelectedProduct.TabIndex = 0;
+            this.lblSelectedProduct.Text = "Seçili Ürün: -";
+            // 
             // FrmMain
             // 
             this.ClientSize = new System.Drawing.Size(978, 560);
+            this.Controls.Add(this.lblSelectedProduct);
             this.Controls.Add(this.dgvProducts);
             this.Controls.Add(this.dgvCart);
             this.Controls.Add(this.nudQty);
@@ -169,5 +182,6 @@ namespace SiparisTakip_Odev.Forms
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnMyOrders;
         private System.Windows.Forms.ComboBox cmbTheme;
+        private System.Windows.Forms.Label lblSelectedProduct;
     }
 }

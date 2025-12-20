@@ -21,16 +21,23 @@ namespace SiparisTakip_Odev.Data
         public static void ApplyToForm(Form f)
         {
             var colors = ColorsFor(Current);
-            f.BackColor = colors.bg;
-            f.ForeColor = colors.fg;
+            // If this is admin form, slightly change accent to red-ish tint for admin theme
+            var colorsToUse = colors;
+            if (f != null && f.Text != null && f.Text.IndexOf("Admin", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                // override accent to a red tone while keeping bg/fg
+                colorsToUse = (colors.bg, colors.fg, Color.FromArgb(196, 57, 57));
+            }
+            f.BackColor = colorsToUse.bg;
+            f.ForeColor = colorsToUse.fg;
             f.Font = new Font("Segoe UI", 9);
 
-            ApplyToControls(f.Controls, colors);
+            ApplyToControls(f.Controls, colorsToUse);
 
             // Special handling for DataGridView controls
             foreach (Control c in f.Controls)
             {
-                if (c is DataGridView dgv) ApplyToDataGridView(dgv, colors);
+                if (c is DataGridView dgv) ApplyToDataGridView(dgv, colorsToUse);
             }
         }
 

@@ -70,6 +70,9 @@
     <Compile Include="Forms\FrmOrders.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FrmOrders.Designer.cs">
+      <DependentUpon>FrmOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmRegister.cs">
       <SubType>Form</SubType>
     </Compile>

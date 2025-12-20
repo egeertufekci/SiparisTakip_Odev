@@ -50,7 +50,7 @@ namespace SiparisTakip_Odev.Forms
             this.tab.Location = new System.Drawing.Point(0, 0);
             this.tab.Name = "tab";
             this.tab.SelectedIndex = 0;
-            this.tab.Size = new System.Drawing.Size(878, 500);
+            this.tab.Size = new System.Drawing.Size(878, 542);
             this.tab.TabIndex = 0;
             // 
             // tabProducts
@@ -59,7 +59,7 @@ namespace SiparisTakip_Odev.Forms
             this.tabProducts.Controls.Add(this.panel);
             this.tabProducts.Location = new System.Drawing.Point(4, 29);
             this.tabProducts.Name = "tabProducts";
-            this.tabProducts.Size = new System.Drawing.Size(870, 467);
+            this.tabProducts.Size = new System.Drawing.Size(870, 509);
             this.tabProducts.TabIndex = 0;
             this.tabProducts.Text = "Ürünler";
             // 
@@ -88,7 +88,7 @@ namespace SiparisTakip_Odev.Forms
             this.panel.Controls.Add(this.btnUpdate);
             this.panel.Controls.Add(this.btnDelete);
             this.panel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel.Location = new System.Drawing.Point(0, 386);
+            this.panel.Location = new System.Drawing.Point(0, 428);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(870, 81);
             this.panel.TabIndex = 1;
@@ -168,7 +168,7 @@ namespace SiparisTakip_Odev.Forms
             this.tabOrders.Controls.Add(this.panel2);
             this.tabOrders.Location = new System.Drawing.Point(4, 29);
             this.tabOrders.Name = "tabOrders";
-            this.tabOrders.Size = new System.Drawing.Size(870, 561);
+            this.tabOrders.Size = new System.Drawing.Size(870, 467);
             this.tabOrders.TabIndex = 1;
             this.tabOrders.Text = "Sipariþler";
             // 
@@ -182,6 +182,7 @@ namespace SiparisTakip_Odev.Forms
             this.dgvOrders.Name = "dgvOrders";
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersWidth = 62;
+            this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvOrders.Size = new System.Drawing.Size(870, 420);
             this.dgvOrders.TabIndex = 0;
             // 
@@ -190,7 +191,7 @@ namespace SiparisTakip_Odev.Forms
             this.panel2.Controls.Add(this.cmbStatus);
             this.panel2.Controls.Add(this.btnUpdateStatus);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 481);
+            this.panel2.Location = new System.Drawing.Point(0, 387);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(870, 80);
             this.panel2.TabIndex = 1;
@@ -217,7 +218,7 @@ namespace SiparisTakip_Odev.Forms
             // 
             // FrmAdmin
             // 
-            this.ClientSize = new System.Drawing.Size(878, 500);
+            this.ClientSize = new System.Drawing.Size(878, 542);
             this.Controls.Add(this.tab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
