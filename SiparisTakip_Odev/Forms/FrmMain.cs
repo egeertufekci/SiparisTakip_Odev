@@ -8,16 +8,10 @@ using SiparisTakip_Odev.Data;
 
 namespace SiparisTakip_Odev.Forms
 {
-    public class FrmMain : Form
+    public partial class FrmMain : Form
     {
         private int _userId;
-        private DataGridView dgvProducts;
-        private DataGridView dgvCart;
-        private NumericUpDown nudQty;
-        private Button btnAddToCart;
-        private Button btnRemoveFromCart;
-        private Button btnCreateOrder;
-        private Button btnLogout;
+        // UI controls are defined in FrmMain.Designer.cs
         // Use BindingList so UI can bind and later be extended easily
         private System.ComponentModel.BindingList<CartItem> cart = new System.ComponentModel.BindingList<CartItem>();
         private Form _owner;
@@ -26,29 +20,14 @@ namespace SiparisTakip_Odev.Forms
         {
             _owner = owner;
             _userId = userId;
-            Text = "Ürünler";
-            Width = 1000;
-            Height = 700;
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-
-            dgvProducts = new DataGridView { Left = 10, Top = 10, Width = 600, Height = 500, ReadOnly = true, AllowUserToAddRows = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
-            dgvCart = new DataGridView { Left = 620, Top = 10, Width = 350, Height = 400, ReadOnly = true, AllowUserToAddRows = false, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
-
-            nudQty = new NumericUpDown { Left = 10, Top = 520, Width = 60, Minimum = 1, Maximum = 100, Value = 1 };
-            btnAddToCart = new Button { Text = "Sepete Ekle", Left = 80, Top = 516, Width = 120 };
-            btnRemoveFromCart = new Button { Text = "Sepetten Kaldýr", Left = 620, Top = 420, Width = 140 };
-            btnCreateOrder = new Button { Text = "Sipariþ Ver", Left = 780, Top = 420, Width = 120 };
-            btnLogout = new Button { Text = "Çýkýþ", Left = 780, Top = 480, Width = 120 };
-
+            InitializeComponent();
+            // wire events
             btnAddToCart.Click += BtnAddToCart_Click;
             btnRemoveFromCart.Click += BtnRemoveFromCart_Click;
             btnCreateOrder.Click += BtnCreateOrder_Click;
             btnLogout.Click += BtnLogout_Click;
-
-            Controls.AddRange(new Control[] { dgvProducts, dgvCart, nudQty, btnAddToCart, btnRemoveFromCart, btnCreateOrder, btnLogout });
-
+            btnMyOrders.Click += BtnMyOrders_Click;
+            cmbTheme.SelectedIndexChanged += CmbTheme_SelectedIndexChanged;
             Load += FrmMain_Load;
         }
 
@@ -56,6 +35,18 @@ namespace SiparisTakip_Odev.Forms
         {
             LoadProducts();
             RefreshCartGrid();
+            // Theme initialization
+            cmbTheme.SelectedItem = SiparisTakip_Odev.Data.Theme.Current;
+            SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
+            SiparisTakip_Odev.Data.Theme.ThemeChanged += (s, ea) => SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
+        }
+
+        private void CmbTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbTheme.SelectedItem == null) return;
+            var theme = cmbTheme.SelectedItem.ToString();
+            SiparisTakip_Odev.Data.Theme.Set(theme);
+            SiparisTakip_Odev.Data.Theme.ApplyToAllOpenForms();
         }
 
         private void LoadProducts()
@@ -80,6 +71,15 @@ namespace SiparisTakip_Odev.Forms
             }
 
             dgvCart.DataSource = dt;
+            // compute and show total
+            decimal toplam = cart.Sum(x => x.Adet * x.BirimFiyat);
+            lblTotal.Text = $"Toplam: {toplam:0.00}";
+        }
+
+        private void BtnMyOrders_Click(object sender, EventArgs e)
+        {
+            var f = new FrmOrders(_userId);
+            f.ShowDialog(this);
         }
 
         private void BtnAddToCart_Click(object sender, EventArgs e)
@@ -192,5 +192,7 @@ namespace SiparisTakip_Odev.Forms
             public int Adet { get; set; }
             public decimal BirimFiyat { get; set; }
         }
+
+        // UI initialized in FrmMain.Designer.cs
     }
 }

@@ -5,26 +5,11 @@ using SiparisTakip_Odev.Data;
 
 namespace SiparisTakip_Odev.Forms
 {
-    public class FrmRegister : Form
+    public partial class FrmRegister : Form
     {
-        private TextBox txtUser;
-        private TextBox txtPass;
-        private Button btnSave;
-
         public FrmRegister()
         {
-            Text = "Kayýt";
-            Width = 300;
-            Height = 180;
-            StartPosition = FormStartPosition.CenterParent;
-
-            var lbl1 = new Label { Text = "Kullanýcý Adý:", Left = 10, Top = 20 };
-            txtUser = new TextBox { Left = 110, Top = 18, Width = 150 };
-            var lbl2 = new Label { Text = "Þifre:", Left = 10, Top = 50 };
-            txtPass = new TextBox { Left = 110, Top = 48, Width = 150 };
-            btnSave = new Button { Text = "Kaydet", Left = 110, Top = 80 };
-            btnSave.Click += BtnSave_Click;
-            Controls.AddRange(new Control[] { lbl1, txtUser, lbl2, txtPass, btnSave });
+            InitializeComponent();
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -50,5 +35,7 @@ namespace SiparisTakip_Odev.Forms
                 MessageBox.Show("Kayýt baþarýsýz");
             }
         }
+
+        // UI initialized in FrmRegister.Designer.cs
     }
 }

@@ -6,35 +6,14 @@ using SiparisTakip_Odev.Data;
 
 namespace SiparisTakip_Odev.Forms
 {
-    public class FrmLogin : Form
+    public partial class FrmLogin : Form
     {
-        private TextBox txtUser;
-        private TextBox txtPass;
-        private Button btnLogin;
-        private Button btnRegister;
-
         public FrmLogin()
         {
-            Text = "Giriþ";
-            Width = 360;
-            Height = 220;
-            StartPosition = FormStartPosition.CenterScreen;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-
-            var lbl1 = new Label { Text = "Kullanýcý Adý:", Left = 10, Top = 20 };
-            txtUser = new TextBox { Left = 110, Top = 18, Width = 150 };
-            var lbl2 = new Label { Text = "Þifre:", Left = 10, Top = 50 };
-            txtPass = new TextBox { Left = 110, Top = 48, Width = 150, UseSystemPasswordChar = true };
-            btnLogin = new Button { Text = "Giriþ", Left = 110, Top = 80 };
-            btnRegister = new Button { Text = "Kayýt Ol", Left = 190, Top = 80 };
-
+            InitializeComponent();
             btnLogin.Click += BtnLogin_Click;
             btnRegister.Click += BtnRegister_Click;
-
-            Controls.AddRange(new Control[] { lbl1, txtUser, lbl2, txtPass, btnLogin, btnRegister });
         }
-
         private void BtnRegister_Click(object sender, EventArgs e)
         {
             var reg = new FrmRegister();
@@ -86,5 +65,7 @@ namespace SiparisTakip_Odev.Forms
             }
             base.OnFormClosing(e);
         }
+
+        // UI initialized in FrmLogin.Designer.cs
     }
 }
