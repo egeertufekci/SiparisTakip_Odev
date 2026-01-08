@@ -21,11 +21,9 @@ namespace SiparisTakip_Odev.Data
         public static void ApplyToForm(Form f)
         {
             var colors = ColorsFor(Current);
-            // If this is admin form, slightly change accent to red-ish tint for admin theme
             var colorsToUse = colors;
             if (f != null && f.Text != null && f.Text.IndexOf("Admin", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                // override accent to a red tone while keeping bg/fg
                 colorsToUse = (colors.bg, colors.fg, Color.FromArgb(196, 57, 57));
             }
             f.BackColor = colorsToUse.bg;
@@ -34,7 +32,6 @@ namespace SiparisTakip_Odev.Data
 
             ApplyToControls(f.Controls, colorsToUse);
 
-            // Special handling for DataGridView controls
             foreach (Control c in f.Controls)
             {
                 if (c is DataGridView dgv) ApplyToDataGridView(dgv, colorsToUse);
@@ -52,17 +49,15 @@ namespace SiparisTakip_Odev.Data
                     btn.ForeColor = Color.White;
                     btn.FlatAppearance.BorderColor = ControlPaint.Dark(colors.accent);
                 }
-                else if (c is Label) // keep label style
+                else if (c is Label) 
                 {
                     c.ForeColor = colors.fg;
                 }
                 else
                 {
-                    // For dark themes prefer explicit dark background so text remains readable
                     bool isDark = colors.bg.GetBrightness() < 0.5f;
                     if (isDark)
                     {
-                        // Use a slightly lighter than page background for input controls to create contrast
                         if (c is TextBox || c is ComboBox || c is NumericUpDown || c is RichTextBox)
                         {
                             c.BackColor = Color.FromArgb(60, 60, 64);
@@ -81,7 +76,6 @@ namespace SiparisTakip_Odev.Data
                     }
                 }
 
-                // DataGridView handled separately
                 if (c is Panel || c is GroupBox || c is TabControl || c is UserControl)
                 {
                     ApplyToControls(c.Controls, colors);
@@ -103,7 +97,6 @@ namespace SiparisTakip_Odev.Data
             dgv.GridColor = ControlPaint.Dark(colors.bg);
             dgv.DefaultCellStyle.SelectionBackColor = ControlPaint.Dark(colors.accent);
             dgv.DefaultCellStyle.SelectionForeColor = Color.White;
-            // Enhance row contrast for dark themes
             bool isDark = colors.bg.GetBrightness() < 0.5f;
             if (isDark)
             {
@@ -130,7 +123,6 @@ namespace SiparisTakip_Odev.Data
                 case "Green":
                     return (Color.FromArgb(242, 255, 245), Color.FromArgb(15, 80, 45), Color.FromArgb(34, 153, 84));
                 default:
-                    // Light
                     return (Color.White, Color.FromArgb(20, 20, 20), Color.FromArgb(0, 120, 215));
             }
         }

@@ -7,8 +7,7 @@ using SiparisTakip_Odev.Data;
 namespace SiparisTakip_Odev.Forms
 {
     public partial class FrmAdmin : Form
-    {
-        // UI controls are defined in FrmAdmin.Designer.cs
+    {      
 
         private Form _owner;
 
@@ -16,7 +15,7 @@ namespace SiparisTakip_Odev.Forms
         {
             _owner = owner;
             InitializeComponent();
-            // Wire up events that rely on code-behind
+            
             btnAdd.Click += BtnAdd_Click;
             btnDelete.Click += BtnDelete_Click;
             btnUpdateStatus.Click += BtnUpdateStatus_Click;
@@ -24,7 +23,6 @@ namespace SiparisTakip_Odev.Forms
             dgv.SelectionChanged += Dgv_SelectionChanged;
             Load += FrmAdmin_Load;
 
-            // Apply current theme to this admin form and subscribe to changes
             SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
             SiparisTakip_Odev.Data.Theme.ThemeChanged += (s, e) => SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
         }
@@ -98,7 +96,6 @@ namespace SiparisTakip_Odev.Forms
                 }
                 var id = Convert.ToInt32(dgv.CurrentRow.Cells["Id"].Value);
 
-                // Delete in transaction: first delete any order details referencing this product
                 var sqlDetails = "DELETE FROM SiparisDetaylar WHERE UrunId=@id";
                 var sqlDelete = "DELETE FROM Urunler WHERE Id=@id";
                 Db.Execute(sqlDetails, new SqlParameter("@id", id));
@@ -137,6 +134,5 @@ namespace SiparisTakip_Odev.Forms
             }
         }
 
-        // UI initialized in FrmAdmin.Designer.cs
     }
 }

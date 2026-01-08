@@ -18,7 +18,6 @@ namespace SiparisTakip_Odev.Forms
             dgvOrders.SelectionChanged += DgvOrders_SelectionChanged;
             Load += FrmOrders_Load;
 
-            // Apply theme to this form
             SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
         }
 
@@ -29,8 +28,6 @@ namespace SiparisTakip_Odev.Forms
 
         private void LoadOrders()
         {
-            // explicit select
-            // Select only orders for this user
             var dt = Db.GetTable("SELECT Id, Tarih, Toplam, Durum FROM Siparisler WHERE KullaniciId=@k ORDER BY Tarih DESC", new SqlParameter("@k", _userId));
             dgvOrders.DataSource = dt;
         }
@@ -42,7 +39,5 @@ namespace SiparisTakip_Odev.Forms
             var dt = Db.GetTable("SELECT sd.Id, sd.UrunId, u.UrunAdi, sd.Adet, sd.BirimFiyat, (sd.Adet*sd.BirimFiyat) AS Tutar FROM SiparisDetaylar sd JOIN Urunler u ON sd.UrunId=u.Id WHERE sd.SiparisId=@s", new SqlParameter("@s", id));
             dgvDetails.DataSource = dt;
         }
-
-        // UI is initialized in FrmOrders.Designer.cs
     }
 }

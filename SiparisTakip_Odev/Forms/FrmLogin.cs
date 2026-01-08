@@ -52,7 +52,6 @@ namespace SiparisTakip_Odev.Forms
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            // If user clicked X on login form, confirm exit
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 var res = MessageBox.Show("Uygulamadan çýkmak istediðinize emin misiniz?", "Çýkýþ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -66,6 +65,5 @@ namespace SiparisTakip_Odev.Forms
             base.OnFormClosing(e);
         }
 
-        // UI initialized in FrmLogin.Designer.cs
     }
 }

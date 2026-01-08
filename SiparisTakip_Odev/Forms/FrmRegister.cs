@@ -35,7 +35,5 @@ namespace SiparisTakip_Odev.Forms
                 MessageBox.Show("Kayýt baþarýsýz");
             }
         }
-
-        // UI initialized in FrmRegister.Designer.cs
     }
 }

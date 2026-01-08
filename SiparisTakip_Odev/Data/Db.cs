@@ -11,7 +11,6 @@ namespace SiparisTakip_Odev.Data
         {
             get
             {
-                // Try to get System.Configuration.ConfigurationManager via reflection to avoid needing project reference
                 try
                 {
                     var t = Type.GetType("System.Configuration.ConfigurationManager, System.Configuration");
@@ -31,7 +30,6 @@ namespace SiparisTakip_Odev.Data
                 }
                 catch { }
 
-                // Fallback: try to read App.config directly
                 try
                 {
                     var doc = new XmlDocument();
@@ -45,7 +43,6 @@ namespace SiparisTakip_Odev.Data
                 }
                 catch { }
 
-                // Last resort: default local DB
                 return "Server=localhost;Database=SiparisTakip_OdevDB;Trusted_Connection=True;TrustServerCertificate=True;";
             }
         }
@@ -88,7 +85,6 @@ namespace SiparisTakip_Odev.Data
             }
         }
 
-        // Helper to check whether a column exists in a table
         public static bool ColumnExists(string tableName, string columnName)
         {
             var dt = GetTable("SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=@t AND COLUMN_NAME=@c",

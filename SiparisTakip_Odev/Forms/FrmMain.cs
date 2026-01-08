@@ -11,8 +11,6 @@ namespace SiparisTakip_Odev.Forms
     public partial class FrmMain : Form
     {
         private int _userId;
-        // UI controls are defined in FrmMain.Designer.cs
-        // Use BindingList so UI can bind and later be extended easily
         private System.ComponentModel.BindingList<CartItem> cart = new System.ComponentModel.BindingList<CartItem>();
         private Form _owner;
 
@@ -21,7 +19,6 @@ namespace SiparisTakip_Odev.Forms
             _owner = owner;
             _userId = userId;
             InitializeComponent();
-            // wire events
             btnAddToCart.Click += BtnAddToCart_Click;
             btnRemoveFromCart.Click += BtnRemoveFromCart_Click;
             btnCreateOrder.Click += BtnCreateOrder_Click;
@@ -39,7 +36,6 @@ namespace SiparisTakip_Odev.Forms
                 lblSelectedProduct.Text = "Seçili Ürün: -";
                 return;
             }
-            // If multiple selected, show count
             if (dgvProducts.SelectedRows.Count > 1)
             {
                 lblSelectedProduct.Text = $"Seçili Ürünler: {dgvProducts.SelectedRows.Count} adet";
@@ -55,7 +51,6 @@ namespace SiparisTakip_Odev.Forms
         {
             LoadProducts();
             RefreshCartGrid();
-            // Theme initialization
             cmbTheme.SelectedItem = SiparisTakip_Odev.Data.Theme.Current;
             SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
             SiparisTakip_Odev.Data.Theme.ThemeChanged += (s, ea) => SiparisTakip_Odev.Data.Theme.ApplyToForm(this);
@@ -75,7 +70,6 @@ namespace SiparisTakip_Odev.Forms
             dgvProducts.DataSource = dt;
         }
 
-        // Build cart grid from BindingList; compute totals in code to avoid relying on DB column names
         private void RefreshCartGrid()
         {
             var dt = new System.Data.DataTable();
@@ -91,7 +85,6 @@ namespace SiparisTakip_Odev.Forms
             }
 
             dgvCart.DataSource = dt;
-            // compute and show total
             decimal toplam = cart.Sum(x => x.Adet * x.BirimFiyat);
             lblTotal.Text = $"Toplam: {toplam:0.00}";
         }
@@ -134,10 +127,8 @@ namespace SiparisTakip_Odev.Forms
         {
             if (!cart.Any()) { MessageBox.Show("Sepet boþ"); return; }
 
-            // Transactional order creation
             try
             {
-                // Calculate total and validate stock in C# (do not rely on DB column names)
                 decimal total = 0;
                 foreach (var it in cart)
                 {
@@ -148,14 +139,11 @@ namespace SiparisTakip_Odev.Forms
                     total += it.Adet * it.BirimFiyat;
                 }
 
-                // Insert order: explicitly list columns to avoid SELECT * mismatch
-                // Check if 'Toplam' column exists in Siparisler
                 bool hasToplam = Db.ColumnExists("Siparisler", "Toplam");
 
                 int siparisId;
                 if (hasToplam)
                 {
-                    // Insert including Toplam column
                     var insertOrder = "INSERT INTO Siparisler (KullaniciId,Tarih,Durum,Toplam) VALUES (@k,@t,@d,@top); SELECT SCOPE_IDENTITY();";
                     var obj = Db.ExecuteScalar(insertOrder,
                         new SqlParameter("@k", _userId),
@@ -166,7 +154,6 @@ namespace SiparisTakip_Odev.Forms
                 }
                 else
                 {
-                    // Insert without Toplam column (backward compatible)
                     var insertOrder = "INSERT INTO Siparisler (KullaniciId,Tarih,Durum) VALUES (@k,@t,@d); SELECT SCOPE_IDENTITY();";
                     var obj = Db.ExecuteScalar(insertOrder,
                         new SqlParameter("@k", _userId),
@@ -175,10 +162,8 @@ namespace SiparisTakip_Odev.Forms
                     siparisId = Convert.ToInt32(Convert.ToDecimal(obj));
                 }
 
-                // Insert details and update stock
                 foreach (var it in cart)
                 {
-                    // Explicit column list for detail insert
                     Db.Execute("INSERT INTO SiparisDetaylar (SiparisId,UrunId,Adet,BirimFiyat) VALUES (@s,@u,@a,@b)",
                         new SqlParameter("@s", siparisId),
                         new SqlParameter("@u", it.UrunId),
@@ -214,6 +199,5 @@ namespace SiparisTakip_Odev.Forms
             public decimal BirimFiyat { get; set; }
         }
 
-        // UI initialized in FrmMain.Designer.cs
     }
 }
